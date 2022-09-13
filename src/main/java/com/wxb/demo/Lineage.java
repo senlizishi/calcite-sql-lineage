@@ -17,7 +17,10 @@ import static org.apache.calcite.sql.SqlKind.*;
 public class Lineage {
 
     public static void main(String[] args) {
-        String sql = "insert into catalog.database.table_c (`username`,`password`) select a.username,b.password from catalog.database.table_a a inner join catalog.database.table_b b on a.uid = b.uid";
+        String sql = "INSERT INTO catalog.database.table_c (`username`, `password`)\n" +
+                "SELECT a.username, b.password\n" +
+                "FROM catalog.database.table_a a\n" +
+                "\tINNER JOIN catalog.database.table_b b ON a.uid = b.uid";
         // 在解析前可以对 SQL 语句进行预处理，比如将不支持的 && 替换为 AND， != 替换为 <>
         SqlParser.Config config =
                 SqlParser.configBuilder()
@@ -38,8 +41,8 @@ public class Lineage {
         SqlBloodRes res = new SqlBloodRes();
         // 递归遍历语法树
         SqlBloodRes dependencies = getDependencies(sqlNode, res, false);
-        System.out.println("Source 表为" + dependencies.getSourceTables().toString());
-        System.out.println("Sink 表为" + dependencies.getSinkTable());
+        System.out.println("Source 表为：" + dependencies.getSourceTables().toString());
+        System.out.println("Sink 表为：" + dependencies.getSinkTable());
     }
 
     public static SqlBloodRes getDependencies(SqlNode sqlNode, SqlBloodRes res, Boolean fromOrJoin) {

@@ -61,4 +61,17 @@ public static SqlBloodRes getDependencies(SqlNode sqlNode, SqlBloodRes res, Bool
         return res;
     }
 ````
+#### 分析展示
+````
+-- SQL 语句
+INSERT INTO catalog.database.table_c (`username`, `password`)
+SELECT a.username, b.password
+FROM catalog.database.table_a a
+	INNER JOIN catalog.database.table_b b ON a.uid = b.uid
+
+-- 分析结果
+Source 表为：[catalog.database.table_a, catalog.database.table_b]
+Sink 表为：catalog.database.table_c
+````
+
 更多信息可查看 [使用 Calcite 解析 SQL 获取源表和结果表](https://www.toutiao.com/article/7137180267675943435/)
